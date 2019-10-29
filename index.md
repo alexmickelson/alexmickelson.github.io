@@ -5,9 +5,6 @@
 layout: default
 ---
 
-# Sometimes the hardest part
-
-### is not knowing what you can do
 
 <hr/>
 
