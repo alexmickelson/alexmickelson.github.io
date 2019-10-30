@@ -1,5 +1,6 @@
 ---
-layout: post
+layout: default
+banner: main
 title:  "Welcome to Jekyll!"
 date:   2019-09-26 16:35:38 +0000
 categories: jekyll update

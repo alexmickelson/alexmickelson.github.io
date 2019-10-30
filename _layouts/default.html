@@ -10,13 +10,8 @@
     <!-- Page Content -->
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       
-      <div>
-        <!-- {{ site.banners.image | where:"title", post.banner }} -->
-        {%- for banner in site.banners -%}
-          {{banner.image}}
-        {%- endfor -%}
-      </div>
-      <h1>Main</h1>
+      {% include header.html %}
+      
       {{ content }}
     </main>
   </div>

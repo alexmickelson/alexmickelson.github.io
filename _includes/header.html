@@ -1,0 +1,6 @@
+<header>
+    {% assign banner =  site.banners | where:"title", page.banner | first %}
+    <div id="banner_image" style="background-image:url(/assets/images/{{ banner.image }})">
+        <p>{{ page.title }}</p>
+    </div>
+</header>

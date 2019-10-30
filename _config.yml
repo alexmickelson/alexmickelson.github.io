@@ -3,6 +3,8 @@ baseurl: "/" # the subpath of your site, e.g. /blog
 title: "Alex's Blog" # the name of your site, e.g. ACME Corp.
 
 # collections_dir: collections
+collections:
+  - banners
 
 sass:
   sass_dir: _sass

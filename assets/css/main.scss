@@ -1,5 +1,25 @@
 ---
 ---
 
-@import 'normalize.scss';
-@import 'bootstrap/bootstrap.scss';
+@import "normalize.scss";
+@import "bootstrap/bootstrap.scss";
+
+#banner_image {
+  width: 100%; /*or 70%, or what you want*/
+  height: 15em; /*or 70%, or what you want*/
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#banner_image p {
+  text-align: center;
+  padding-top: 2em;
+  font-weight: 700;
+  font-size: 50px;
+  text-shadow: 
+    -1px  1px  0.3em #ffffff,
+    -1px -1px  0.3em #ffffff,
+    1px  -1px  0.3em #ffffff,
+    1px   1px  0.3em #ffffff;
+}

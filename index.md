@@ -4,9 +4,10 @@
 
 layout: default
 banner: main
+title: home page
 ---
 
-
+index
 
 
 <!-- 
