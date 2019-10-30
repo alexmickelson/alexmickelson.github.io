@@ -1,6 +1,13 @@
 ---
 ---
 
+### Mix CLI
+
+mix is the elixir command line tool.
+
+* mix test <test_file_path>
+
+
 ### make a console app
 
 in mix.esx add this to the list
