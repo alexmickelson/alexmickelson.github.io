@@ -2,6 +2,7 @@ url: "alexmickelson.guru" # the base hostname & protocol for your site, e.g. htt
 baseurl: "/" # the subpath of your site, e.g. /blog
 title: "Alex's Blog" # the name of your site, e.g. ACME Corp.
 
+theme: minima
 # collections_dir: collections
 collections:
   - banners
