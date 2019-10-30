@@ -24,10 +24,6 @@ When using pip use python3 -m pip install <packageName> so that you don't have t
 
 Suprisingly, you can put type checking in an interpreted language. Check out https://mypy.readthedocs.io/en/latest/cheat_sheet_py3.html for a cheat sheet.
 
-#### Generate documentation
-
-Sphinx
-
 #### virtual environments
 
 https://code.visualstudio.com/docs/python/environments
