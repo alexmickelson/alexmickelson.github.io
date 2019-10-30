@@ -3,12 +3,9 @@
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
 layout: default
+banner: main
 ---
 
-
-<hr/>
-
-Here you can find some short tutorials on how to do things.
 
 
 

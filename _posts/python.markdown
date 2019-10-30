@@ -1,3 +1,8 @@
+---
+layout: post
+title:  "Python"
+date:   2019-10-21 16:00:00 +0000
+---
 # Python
 
 You should always use python3, as python2 is being depricated in [january 2020](https://www.python.org/dev/peps/pep-0373/). 
