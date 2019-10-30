@@ -27,3 +27,4 @@ Suprisingly, you can put type checking in an interpreted language. Check out htt
 #### virtual environments
 
 https://code.visualstudio.com/docs/python/environments
+
