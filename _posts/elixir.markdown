@@ -23,3 +23,19 @@ now you can run "mix escript.build". this pops out an executable you can run
 Called HEX
 
 https://hex.pm/
+
+### elixir map dependencies
+
+mix xref graph 
+
+### Credo
+
+in mix.exs deps
+
+      {:credo, "~> 0.3", only: [:dev, :test], runtime: false}
+
+run mix credo
+
+generate config file 
+
+> mix credo.gen.config
