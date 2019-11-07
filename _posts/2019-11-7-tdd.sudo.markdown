@@ -15,13 +15,12 @@ date:   2019-10-21 16:00:00 +0000
 > "The only thing standing between your code and the spaghetti it desires to be, are your tests"
 > \- Alex Mickelson
 
-"one of the things I have found really valuble for tests is that it makes your code flexible. [wiht TDD] you have a suite of tests you can run to check if your program works correctly. You are one click away from knowing if you logic was right"
-\- Diego Vanegas
+> "The slowest way to check if your program is working is the debugger"
+> \- Heber Allen
 
-"The slowest way to check if your program is working is the debugger"
-\- Heber Allen
+> "One of the things I have found really valuble for tests is that it makes your code flexible. [With TDD] you have a suite of tests you can run to check if your program works correctly. You are one click away from knowing if you logic was right"
+> \- Diego Vanegas
 
-It is really easy, like REALLY easy, to 
 
 
 #### Terminology
@@ -36,15 +35,53 @@ It is really easy, like REALLY easy, to
 
 
 
-#### common pitfalls while testing
+#### Common Pitfalls While Testing
 
+
+
+#### Calculator Project
+
+As is tradition in programming we will be making lots of calculators. I chose the calculator intentionally so we can focus more on the principles of Test Driven Development rather than learing new algorithms or concepts.
+
+C++: implement add and subtract, keep a running total
+
+Java: keep a list of number to add and numbers to subtract, evaluate total in getTotal()
+
+C#: This calculator will have no total variable. Use a dictionary to lookup pre-computed values.
+
+Python: 
 
 #### how to setup tests in each language
 
 ##### C++
 
+Requirements:
+* g++
+* gbd
+* c++ vscode extension
+
 Due to its age, C++ has the least support out of the box for unit testing. We will be using [Doctest](https://github.com/onqtam/doctest), an open source framework. 
 
+
+##### Java
+
+Requirements:
+* jdk
+* jar files for Junit4 and hamcrest core
+
+We will be using Junit 4 as our testing framework. There is a newer Junit 5 out, but I have used Junit4 in the past so it is what we will be focusing on today. 
+
+For java development I would recomend using intellij for an IDE. We will be using the command line to compile and run our tests, so any editor will work.
+
+
+##### C#
+
+Requirements:
+
+* dotnet cli
+
+
+##### Python
 
 
 
