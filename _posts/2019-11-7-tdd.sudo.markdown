@@ -28,15 +28,20 @@ date:   2019-10-21 16:00:00 +0000
 * Unit test - A mini-program that checks the functionality of a unit of code.
 * Integration test - A program that checks the combined functionality of multiple units of code
 * TDD - Acronym for Test Driven Development
+
 * Red, Green, Refactor - The TDD lifecycle
-    * Red: You have a failing test, you cannot implement features/functionality unless you have a failing test. Code that does not compile is 'Red'.
-    * Green: All your tests are passing. At this stage you are not allowed to add functionality to your code.
+    * Red: You have a failing test, you cannot implement features/functionality unless you have a failing test. You are only allowed to add minimal code untill your tests pass. Code that does not compile is 'Red'.
+    * Green: All your tests are passing. At this stage you are not allowed to add functionality to your code. 
     * Refactor: Once your tests pass you should refactor your code. Your tests will tell you if you broke something. You are only allowed to change (refactor) existing code, not implement new code.
 
 
 
 #### Common Pitfalls While Testing
 
+* Multiple assertions per test. 
+* Large iteration loops
+* Implementing more than the minimum amount of code
+* Not being a lazy programmer
 
 
 #### Calculator Project
