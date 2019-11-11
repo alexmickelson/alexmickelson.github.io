@@ -24,7 +24,22 @@
   width: 80%;
 }
 
+// blockquote {
+//   background-color: #d8d8d865;
+//   // padding: 2em;
+// }
 blockquote {
-  background-color: #d8d8d865;
-  // padding: 2em;
+  color: $grey-color;
+  border-left: 4px solid $grey-color-light;
+  letter-spacing: -1px;
+  font-style: italic;
+  margin-left: $spacing-unit / 2;
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+blockquote p{
+  padding-left: 10px;
 }
