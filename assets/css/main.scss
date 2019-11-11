@@ -24,8 +24,12 @@
   width: 80%;
 }
 
+// blockquote {
+//   background-color: #d8d8d865;
+//   // padding: 2em;
+// }
 blockquote {
-  color: $grey-color;
+  color: #d8d8d865;
   border-left: 4px solid $grey-color-light;
   letter-spacing: -1px;
   font-style: italic;
