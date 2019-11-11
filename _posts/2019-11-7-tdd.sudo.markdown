@@ -14,8 +14,7 @@ date:   2019-10-21 16:00:00 +0000
      alt="Picture of Spaghetti, by Maurijn Pach - pexels.com"
      class="articleImage" />
 
-> "The only thing standing between your code and the spaghetti 
-> it desires to be, are your tests"
+> "The only thing standing between your code and the spaghetti it desires to be, are your tests"
 > \- Alex Mickelson
 
 > "The slowest way to check if your program is working is the debugger"
