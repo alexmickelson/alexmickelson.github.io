@@ -11,3 +11,7 @@ docker run --rm \
   -p 4000:4000 \
   jekyll/jekyll:$JEKYLL_VERSION \
   jekyll serve
+
+# docker run --rm --volume="$PWD:/srv/jekyll" --volume="$PWD/assets/css/rougify.css:/assets/css/rougify.css" --volume="$PWD/vendor/bundle:/usr/local/bundle" -it jekyll/jekyll bash
+# rougify style github > /assets/css/rougify.css
+# rougify help style

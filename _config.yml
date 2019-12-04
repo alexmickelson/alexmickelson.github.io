@@ -10,6 +10,8 @@ collections:
 sass:
   sass_dir: assets/css
 
+markdown: kramdown
+highlighter: rouge
 kramdown:
   input: GFM
   auto_ids: true
