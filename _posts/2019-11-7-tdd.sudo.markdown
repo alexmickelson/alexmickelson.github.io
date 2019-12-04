@@ -49,7 +49,7 @@ date:   2019-10-21 16:00:00 +0000
 * Implementing more than the minimum amount of code
 * Making decisions before we need to
 
-Test driven development documents your development process. The initial tests are for the most fundamental code, like a constructor. Here are some of my beggining tests from [Kata ]
+Test driven development documents your development process. The initial tests are for the most fundamental code, like a constructor. Here are some of my beggining tests from [Kata 14](http://codekata.com/kata/kata14-tom-swift-under-the-milkwood/)
 
 
 {% highlight elixir %}
