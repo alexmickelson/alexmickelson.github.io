@@ -28,3 +28,9 @@ Suprisingly, you can put type checking in an interpreted language. Check out htt
 
 https://code.visualstudio.com/docs/python/environments
 
+Python virtual environments are a way of managing your dependencies across projects. There is a default or global environment that can easily get cluttered every time you pip install another package. Sometimes projects requre conflicting versions of a module. 
+A python virtual environment is a directory, usually in the ~/.enviroments folder, that stores a list of modules that enviroment has. Tools like vscode can automatically detect the virtual enviroments in your machine to run their debuggers. Whenever you use python in production you should run it in a virtual environment.  
+
+to switch to a virtual environment run
+python3 -m venv EnviromentDirectory
+
