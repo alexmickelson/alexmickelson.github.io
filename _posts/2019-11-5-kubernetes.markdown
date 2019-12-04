@@ -10,7 +10,7 @@ title:  "Getting Started With Kubernetes"
 
 install:
 
-    https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+[Kubeadm Installation Docs](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
 
 ### Prep
 
@@ -18,7 +18,7 @@ You need to clean a node if you have used kubernetes on it before.
 
 > sudo kubeadm reset
 
-Make sure that the ~/.kube/config (kubeclt file) is deleted
+Make sure that the ~/.kube/config (kubectl file) is deleted
 
 Make sure swap is disabled. 
 
@@ -26,7 +26,7 @@ Make sure swap is disabled.
 
 On the master 
 
-    https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
+[Kubeadm Cluster Creation Docs](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
 
 to speed thing up you can pull the kubeadm images first
 > kubeadm config images pull

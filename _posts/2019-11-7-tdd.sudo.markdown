@@ -1,13 +1,14 @@
 ---
 layout: default
 banner: practice
-title:  "Test Drive Development"
+title:  "Test Driven Development"
 date:   2019-10-21 16:00:00 +0000
 ---
 
 # Test Driven Development
 
 > "Legacy code is any code that does not have tests"
+>
 > \- Jonathan Allen
 
 <img src="/assets/images/basil-blur-cheese-546945.jpg"
@@ -15,12 +16,15 @@ date:   2019-10-21 16:00:00 +0000
      class="articleImage" />
 
 > "The only thing standing between your code and the spaghetti it desires to be, are your tests"
+>
 > \- Alex Mickelson
 
 > "The slowest way to check if your program is working is the debugger"
+>
 > \- Heber Allen
 
 > "One of the things I have found really valuble for tests is that it makes your code flexible. [With TDD] you have a suite of tests you can run to check if your program works correctly. You are one click away from knowing if you logic was right"
+>
 > \- Diego Vanegas
 
 
@@ -44,6 +48,17 @@ date:   2019-10-21 16:00:00 +0000
 * Large iteration loops
 * Implementing more than the minimum amount of code
 * Making decisions before we need to
+
+Test driven development documents your development process. The initial tests are for the most fundamental code, like a constructor. Here are some of my beggining tests from [Kata ]
+
+
+{% highlight elixir %}
+test "split string by spaces" do
+    string = "string with spaces"
+    expected = ["string", "with", "spaces"]
+    assert expected == BookGenerator.string_to_list({:ok, string})
+end
+{% endhighlight %}
 
 <!-- 
 #### Calculator Project

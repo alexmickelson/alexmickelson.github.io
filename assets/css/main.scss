@@ -2,7 +2,9 @@
 ---
 
 @import "normalize.scss";
+@import "./custom/overrides.scss"; // we've added this line
 @import "./bootstrap/bootstrap.scss";
+
 
 #banner_image {
   width: 100%; 
@@ -11,35 +13,70 @@
   background-position: center;
   background-repeat: no-repeat;
 }
-  
+$banner_shadow: #000000;
 #banner_image p {
   text-align: center;
   padding-top: 1em;
   font-weight: 700;
   font-size: 50px;
-  text-shadow: -1px 1px 0.3em #ffffff, -1px -1px 0.3em #ffffff, 1px -1px 0.3em #ffffff, 1px 1px 0.3em #ffffff;
+  text-shadow: -1px 1px 0.3em $banner_shadow, -1px -1px 0.3em $banner_shadow, 1px -1px 0.3em $banner_shadow, 1px 1px 0.3em $banner_shadow;
 }
 
 .articleImage {
   width: 80%;
 }
 
-// blockquote {
-//   background-color: #d8d8d865;
-//   // padding: 2em;
-// }
-// // blockquote {
-// //   color: #d8d8d865;
-// //   border-left: 4px solid #f3f3f365; // $grey-color-light;
-// //   letter-spacing: -1px;
-// //   font-style: italic;
-// //   margin-left: $spacing-unit / 2;
+hr {
+  -moz-border-bottom-colors: none;
+  -moz-border-image: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  border-color: rgb(0, 0, 0);
+  border-style: solid none;
+  border-width: 1px 0;
+  margin: .1em;
+}
 
-// //   > :last-child {
-// //     margin-bottom: 0;
-// //   }
-// // }
+body {
+  background-color: #1f1f1f;
+}
 
-// // blockquote p{
-// //   padding-left: 10px;
-// // }
+nav {
+  background-color: $light;
+}
+
+main {
+  color: #AEAEAE;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: large;
+}
+
+ul.nav a:hover { color: #ce1a5c !important; }
+
+blockquote {
+  background-color: $light;
+  padding: .2em;
+  color: $primary;
+  //color: #d8d8d865;
+  border-left: 4px solid #f3f3f365; // $grey-color-light;
+  letter-spacing: -1px;
+  margin-left: 1em;
+  font-weight: 550;
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+blockquote p{
+  padding-left: 10px;
+  margin: 0;
+}
+
+pre {
+  background-color: $light;
+  // color: $primary;
+  padding: 1em;
+  // margin: .2em;
+}

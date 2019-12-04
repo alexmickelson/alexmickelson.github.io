@@ -85,8 +85,11 @@ textarea {
  * Addresses margins handled incorrectly in IE6/7
  */
 
+
+header,
 body {
     margin: 0;
+    padding: 0;
 }
 
 

@@ -1,4 +1,4 @@
 ---
 title: main
-image: architecture-blocks-blue-sky-275030.jpg
+image: architecture-blocks-blue-sky-pink-border.jpg
 ---

@@ -1,5 +1,6 @@
-<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+<nav class="col-md-2 d-none d-md-block sidebar navbar">
     <div class="sidebar-sticky">
+        <br/>
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link active" href="/">
@@ -13,9 +14,10 @@
                 </a>
             </li>
             {% for post in site.posts %}
-              <li class="nav-item">
+            <hr>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ post.url }}">{{ post.title }}</a>
-              </li>
+            </li>
             {% endfor %}
         </ul>
     </div>
