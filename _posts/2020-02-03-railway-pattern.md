@@ -26,6 +26,314 @@ Imagine two parallel railways
 
 If you are ever on the green railway and detect some error or invalid state you can move to the red railway. Now you can handle errors elegantly without throwing exceptions!
 
+## Level 1 - Result class with if statements
+
+
+#### In use
+
+{% highlight csharp %}
+public async Task<IActionResult> OnPostUploadAsync(SongUploadRequest request)
+{
+    Result<SongUploadRequest> validRequest = request.ValidateRequest();
+    Result<Song> song = WriteToFileSystem(validRequest);
+    Result<bool> success = StoreSongInDatabase(song);
+    return HttpResponse(success);
+}
+{% endhighlight %}
+
+#### Result Generic Class
+
+{% highlight csharp %}
+public struct Result<T>
+{
+    public readonly bool IsFailure => !IsSucccess;
+    public readonly bool IsSucccess;
+    public readonly T state;
+    public readonly string error;
+
+    private Result(bool IsSucccess, T state, string error)
+    {
+        this.IsSucccess = IsSucccess;
+        this.state = state;
+        this.error = error;
+    }
+
+    public static Result<T> Success(T state) => new Result<T>(true, state, null);
+    public static Result<T> Failure(string error) => new Result<T>(false, default(T), error);
+}
+{% endhighlight %}
+
+#### Private Functions With If Statements
+
+{% highlight csharp %}
+private Result<SongUploadRequest> ValidateRequest(SongUploadRequest request)
+{
+    return Result<SongUploadRequest>.Success(request);
+}
+
+private Result<Song> WriteToFileSystem(Result<SongUploadRequest> result)
+{
+    if (result.IsSucccess)
+    {
+        var songGuid = songFileService.WriteNewSongFile(result.state.SongFile);
+        var song = new Song()
+        {
+            SongId = songGuid,
+            SongName = result.state.SongName,
+            SongPath = ""
+        };
+        return Result<Song>.Success(song);
+    }
+    else
+    {
+        return Result<Song>.Failure(result.error);
+    }
+}
+
+private Result<bool> StoreSongInDatabase(Result<Song> result)
+{
+    if(result.IsSucccess)
+    {
+        await songRepository.StoreSong(result.state);
+        return Result<bool>.Success(true);
+    }
+    else
+    {
+        return Result<bool>.Failure(result.error);
+    }
+}
+
+private IActionResult ToHttpResponse(Result<bool> result)
+{
+    if (result.IsSucccess)
+    {
+        return new OkResult();
+    }
+    else
+    {
+        return new BadRequestObjectResult(result.error);
+    }
+}
+{% endhighlight %}
+
+## Level 2 - Static Helper Methods
+
+#### In use
+
+{% highlight csharp %}
+public IActionResult OnPostUpload(SongUploadRequest request) =>
+    return request
+        .ValidateRequest()
+        .WriteToFileSystem(_songFileService)
+        .StoreSongInDatabase(_songRepository)
+        .ToHttpResponse();
+{% endhighlight %}
+
+#### Result Class - same as level 1
+
+{% highlight csharp %}
+public struct Result<T>
+{
+    public readonly bool IsFailure => !IsSucccess;
+    public readonly bool IsSucccess;
+    public readonly T state;
+    public readonly string error;
+
+    private Result(bool IsSucccess, T state, string error)
+    {
+        this.IsSucccess = IsSucccess;
+        this.state = state;
+        this.error = error;
+    }
+
+    public static Result<T> Success(T state) => new Result<T>(true, state, null);
+    public static Result<T> Failure(string error) => new Result<T>(false, default(T), error);
+}
+{% endhighlight %}
+
+#### Helper Methods
+
+{% highlight csharp %}
+public static class SongUploadHelpers
+{
+    public static Result<SongUploadRequest> ValidateRequest(this SongUploadRequest request)
+    {
+        return Result<SongUploadRequest>.Success(request);
+    }
+
+    public static Result<Song> WriteToFileSystem(this Result<SongUploadRequest> result, ISongFileService songFileService)
+    {
+        if (result.IsSucccess)
+        {
+            var songGuid = songFileService.WriteNewSongFile(result.state.SongFile);
+            var song = new Song()
+            {
+                SongId = songGuid,
+                SongName = result.state.SongName,
+                SongPath = ""
+            };
+            return Result<Song>.Success(song);
+        }
+        else
+        {
+            return Result<Song>.Failure(result.error);
+        }
+    }
+
+    public static Result<bool> StoreSongInDatabase(this Result<Song> result, ISongRepository songRepository)
+    {
+        if(result.IsSucccess)
+        {
+            await songRepository.StoreSong(result.state);
+            return Result<bool>.Success(true);
+        }
+        else
+        {
+            return Result<bool>.Failure(result.error);
+        }
+    }
+
+    public static IActionResult ToHttpResponse(this Result<bool> result)
+    {
+        if (result.IsSucccess)
+        {
+            return new OkResult();
+        }
+        else
+        {
+            return new BadRequestObjectResult(result.error);
+        }
+    }
+}
+{% endhighlight %}
+
+
+
+## Level 3 - Functional
+
+#### Result Class and Result Helper Class
+
+{% highlight csharp %}
+public struct Result<T>
+{
+    public readonly bool IsFailure => !IsSucccess;
+    public readonly bool IsSucccess;
+    public readonly T state;
+    public readonly string error;
+
+    private Result(bool IsSucccess, T state, string error)
+    {
+        this.IsSucccess = IsSucccess;
+        this.state = state;
+        this.error = error;
+    }
+
+    public static Result<T> Success(T state) => new Result<T>(true, state, null);
+    public static Result<T> Failure(string error) => new Result<T>(false, default(T), error);
+
+}
+public static class ResultHelper
+{
+    public static Result<U> Apply<U, T>(this Result<T> result, Func<T, Result<U>> func)
+    {
+        if(result.IsSucccess)
+        {
+            return func(result.state);
+        }
+        else
+        {
+            return Result<U>.Failure(result.error);
+        }
+    }
+    public static async Task<Result<U>> ApplyAsync<U, T>(this Result<T> result, Func<T, Task<Result<U>>> func)
+    {
+        if(result.IsSucccess)
+        {
+            return await func(result.state);
+        }
+        else
+        {
+            return Result<U>.Failure(result.error);
+        }
+    }
+    public static async Task<Result<U>> ApplyAsync<U, T>(this Task<Result<T>> task, Func<T, Task<Result<U>>> func)
+    {
+        await task;
+        if(task.Result.IsSucccess)
+        {
+            return await func(task.Result.state);
+        }
+        else
+        {
+            return Result<U>.Failure(task.Result.error);
+        }
+    }
+}
+{% endhighlight %}
+
+#### In use
+
+{% highlight csharp %}
+public async Task<IActionResult> Upload(SongUploadRequest request) =>
+    await request
+        .ValidateRequest()
+        .ApplyAsync(WriteSongToFileSystem)
+        .ApplyAsync(StoreSongInDatabaseAsync)
+        .ToHttpResponse();
+{% endhighlight %}
+
+#### Private Class Functions
+
+{% highlight csharp %}
+private async Task<Result<Song>> WriteSongToFileSystem(SongUploadRequest songUploadRequest)
+{
+    var songGuid = await _songFileService.WriteNewSongFile(songUploadRequest.SongFile);
+    if(songGuid == Guid.Empty)
+    {
+        return Result<Song>.Failure("Error storing song in file system");
+    }
+    else
+    {
+        var song = new Song(songGuid, songUploadRequest.SongName);
+        return Result<Song>.Success(song);
+    }
+}
+
+private async Task<Result<bool>> StoreSongInDatabaseAsync(Song song)
+{
+    await _songRepository.StoreSong(song);
+    return Result<bool>.Success(true);
+}
+{% endhighlight %}
+
+
+
+#### Helper Methods
+
+{% highlight csharp %}
+public static class SongHelpers
+{
+    public static Result<SongUploadRequest> ValidateRequest(this SongUploadRequest request)
+    {
+        return Result<SongUploadRequest>.Success(request);
+    }
+
+    public static async Task<IActionResult> ToHttpResponse(this Task<Result<bool>> task)
+    {
+        await task;
+        if (task.Result.IsSucccess)
+        {
+            return new OkResult();
+        }
+        else
+        {
+            return new BadRequestObjectResult(task.Result.error);
+        }
+    }
+}
+{% endhighlight %}
+
+
 
 
 
@@ -34,29 +342,48 @@ If you are ever on the green railway and detect some error or invalid state you 
 
 ## Excersize
 
-Write a function to handle the registration of a new user.
+Your task is to write a UserService class 
 
-According to *Secure by Design*, by Sawano, Johnsson, Deogun, there are 4 levels of validation that should happen on data. 
+{% highlight csharp %}
+public class UserRegistrationRequest
+{
+    public string username { get; set; }
+    public string email { get; set; }
+}
+{% endhighlight %}
+{% highlight csharp %}
+public class UserService
+{
+    public bool Register(UserRegistrationRequest userRegistrationRequest)
+}
+{% endhighlight %}
 
-- Origin — Is the data from a legitimate sender?
-- Size — Is it reasonably big?
-- Lexical content — Does it contain the right characters and encoding?
-- Syntax — Is the format right?
-- Semantics — Does the data make sense?
+Each of you functions in the UserService class should return and recieve a Result\<T>
 
+
+1. Your function should recieve a UserRegistrationRequest object with a
+   - username
+   - email
+2. You should validate the userResigtration object
+   - The username should be less than 10 characters
+   - The email should have one @ character
+3. You should check if the user already exists
+   - If the username starts with 'c' assume the user already exists
+4. You should save the user to the database
+   - the function saveToDatabase(*user*) will return null if it fails
+5. If you are successfull return a true, otherwise return false
 
 
 
 
 #### Additional Resources
 
-https://fsharpforfunandprofit.com/rop/
+<https://fsharpforfunandprofit.com/rop/>
 
-https://medium.com/@naveenkumarmuguda/railway-oriented-programming-a-powerful-functional-programming-pattern-ab454e467f31
+<https://medium.com/@naveenkumarmuguda/railway-oriented-programming-a-powerful-functional-programming-pattern-ab454e467f31>
 
-https://proandroiddev.com/railway-oriented-programming-in-kotlin-f1bceed399e5
+<https://proandroiddev.com/railway-oriented-programming-in-kotlin-f1bceed399e5>
 
-https://github.com/ecourtenay/ROP
+<https://github.com/ecourtenay/ROP>
 
-
-https://en.wikipedia.org/wiki/Template_method_pattern
+<https://en.wikipedia.org/wiki/Template_method_pattern>
