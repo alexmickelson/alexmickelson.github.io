@@ -19,7 +19,14 @@ Requirements for Railway Pattern:
 
 Imagine two parallel railways
 
-![[Two Railways](https://fsharpforfunandprofit.com/rop/)](/assets/images/railway_pattern.png "Two Railways")
+<!-- ![[Two Railways](https://fsharpforfunandprofit.com/rop/)](/assets/images/railway_pattern.png "Two Railways") -->
+<img src="/assets/images/railway_pattern.png"
+     alt="Two Railways https://fsharpforfunandprofit.com/rop/"
+     class="articleImage" />
+
+If you are ever on the green railway and detect some error or invalid state you can move to the red railway. Now you can handle errors elegantly without throwing exceptions!
+
+
 
 
 
