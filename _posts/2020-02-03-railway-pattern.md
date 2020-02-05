@@ -234,6 +234,22 @@ public struct Result<T>
 }
 public static class ResultHelper
 {
+    public static Result<T> Validate<T>(this T state, Func<T, Result<T>> func) 
+    {
+        return func(state);
+    }
+
+    public static async Task<U> Finally<U, T>(this Task<Result<T>> result, Func<Result<T>, U> func)
+    {
+        await result;
+        return func(result.Result);
+    }
+
+    public static U Finally<U, T>(this Result<T> result, Func<Result<T>, U> func)
+    {
+        return func(result);
+    }
+
     public static Result<U> Apply<U, T>(this Result<T> result, Func<T, Result<U>> func)
     {
         if(result.IsSucccess)
@@ -245,7 +261,7 @@ public static class ResultHelper
             return Result<U>.Failure(result.error);
         }
     }
-    public static async Task<Result<U>> ApplyAsync<U, T>(this Result<T> result, Func<T, Task<Result<U>>> func)
+    public static async Task<Result<U>> Apply<U, T>(this Result<T> result, Func<T, Task<Result<U>>> func)
     {
         if(result.IsSucccess)
         {
@@ -256,7 +272,7 @@ public static class ResultHelper
             return Result<U>.Failure(result.error);
         }
     }
-    public static async Task<Result<U>> ApplyAsync<U, T>(this Task<Result<T>> task, Func<T, Task<Result<U>>> func)
+    public static async Task<Result<U>> Apply<U, T>(this Task<Result<T>> task, Func<T, Task<Result<U>>> func)
     {
         await task;
         if(task.Result.IsSucccess)
@@ -276,33 +292,53 @@ public static class ResultHelper
 {% highlight csharp %}
 public async Task<IActionResult> Upload(SongUploadRequest request) =>
     await request
-        .ValidateRequest()
-        .ApplyAsync(WriteSongToFileSystem)
-        .ApplyAsync(StoreSongInDatabaseAsync)
-        .ToHttpResponse();
+        .Validate(validateSongUploadRequest)
+        .Apply(writeSongToFileSystem)
+        .Apply(storeSongInDatabaseAsync)
+        .Finally(toHttpResponse);
 {% endhighlight %}
 
 #### Private Class Functions
 
 {% highlight csharp %}
-private async Task<Result<Song>> WriteSongToFileSystem(SongUploadRequest songUploadRequest)
+private async Task<Result<Song>> writeSongToFileSystem(SongUploadRequest songUploadRequest)
 {
-    var songGuid = await _songFileService.WriteNewSongFile(songUploadRequest.SongFile);
-    if(songGuid == Guid.Empty)
-    {
-        return Result<Song>.Failure("Error storing song in file system");
-    }
-    else
-    {
-        var song = new Song(songGuid, songUploadRequest.SongName);
-        return Result<Song>.Success(song);
-    }
+    var result = await _songFileService.WriteNewSongFile(songUploadRequest.SongFile);
+    return result.IsSucccess
+        ? Result<Song>.Success(new Song(result.state, songUploadRequest.SongName))
+        : Result<Song>.Failure(result.error);
 }
 
-private async Task<Result<bool>> StoreSongInDatabaseAsync(Song song)
+private async Task<Result<bool>> storeSongInDatabaseAsync(Song song)
 {
     await _songRepository.StoreSong(song);
     return Result<bool>.Success(true);
+}
+
+private Result<SongUploadRequest> validateSongUploadRequest(SongUploadRequest uploadRequest)
+{
+    if (uploadRequest.SongName.Length > 50)
+    {
+        return Result<SongUploadRequest>.Failure("Song name too long");
+    }
+    var fiveMbInBytes = 5_000_000;
+    if (uploadRequest.SongFile.Length > fiveMbInBytes)
+    {
+        return Result<SongUploadRequest>.Failure("File too large");
+    }
+    return Result<SongUploadRequest>.Success(uploadRequest);
+}
+
+private IActionResult toHttpResponse(Result<bool> result)
+{
+    if (result.IsSucccess)
+    {
+        return new OkResult();
+    }
+    else
+    {
+        return new BadRequestObjectResult(result.error);
+    }
 }
 {% endhighlight %}
 
