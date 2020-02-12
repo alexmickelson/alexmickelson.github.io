@@ -8,6 +8,10 @@ title:  "Railway Pattern"
 
 Also Know as Railway Oriented Programming
 
+## The problem
+
+Whenever a program throws an exception it expects whoever called it to be ready to appropriately catch the error. The code we write has no control over who calls it. We do, however, have control over the code that we call. The Railway Pattern is a way to send error handling down the call stack (to code you control) instead of throwing exceptions up the call stack (to code you don't control).
+
 ## What is it?
 
 The Railway Pattern is when every function in your code has 2 paths: A happy path, and a failure path.
@@ -116,100 +120,7 @@ private IActionResult ToHttpResponse(Result<bool> result)
 }
 {% endhighlight %}
 
-## Level 2 - Static Helper Methods
-
-#### In use
-
-{% highlight csharp %}
-public IActionResult OnPostUpload(SongUploadRequest request) =>
-    return request
-        .ValidateRequest()
-        .WriteToFileSystem(_songFileService)
-        .StoreSongInDatabase(_songRepository)
-        .ToHttpResponse();
-{% endhighlight %}
-
-#### Result Class - same as level 1
-
-{% highlight csharp %}
-public struct Result<T>
-{
-    public readonly bool IsFailure => !IsSucccess;
-    public readonly bool IsSucccess;
-    public readonly T state;
-    public readonly string error;
-
-    private Result(bool IsSucccess, T state, string error)
-    {
-        this.IsSucccess = IsSucccess;
-        this.state = state;
-        this.error = error;
-    }
-
-    public static Result<T> Success(T state) => new Result<T>(true, state, null);
-    public static Result<T> Failure(string error) => new Result<T>(false, default(T), error);
-}
-{% endhighlight %}
-
-#### Helper Methods
-
-{% highlight csharp %}
-public static class SongUploadHelpers
-{
-    public static Result<SongUploadRequest> ValidateRequest(this SongUploadRequest request)
-    {
-        return Result<SongUploadRequest>.Success(request);
-    }
-
-    public static Result<Song> WriteToFileSystem(this Result<SongUploadRequest> result, ISongFileService songFileService)
-    {
-        if (result.IsSucccess)
-        {
-            var songGuid = songFileService.WriteNewSongFile(result.state.SongFile);
-            var song = new Song()
-            {
-                SongId = songGuid,
-                SongName = result.state.SongName,
-                SongPath = ""
-            };
-            return Result<Song>.Success(song);
-        }
-        else
-        {
-            return Result<Song>.Failure(result.error);
-        }
-    }
-
-    public static Result<bool> StoreSongInDatabase(this Result<Song> result, ISongRepository songRepository)
-    {
-        if(result.IsSucccess)
-        {
-            await songRepository.StoreSong(result.state);
-            return Result<bool>.Success(true);
-        }
-        else
-        {
-            return Result<bool>.Failure(result.error);
-        }
-    }
-
-    public static IActionResult ToHttpResponse(this Result<bool> result)
-    {
-        if (result.IsSucccess)
-        {
-            return new OkResult();
-        }
-        else
-        {
-            return new BadRequestObjectResult(result.error);
-        }
-    }
-}
-{% endhighlight %}
-
-
-
-## Level 3 - Functional
+## Level 2 - Functional
 
 #### Result Class and Result Helper Class
 
@@ -406,7 +317,6 @@ Each of you functions in the UserService class should return and recieve a Resul
 3. You should check if the user already exists
    - If the username starts with 'c' assume the user already exists
 4. You should save the user to the database
-   - the function saveToDatabase(*user*) will return null if it fails
 5. If you are successfull return a true, otherwise return false
 
 
