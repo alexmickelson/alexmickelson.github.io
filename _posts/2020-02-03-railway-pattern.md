@@ -324,6 +324,9 @@ Each of you functions in the UserService class should return and recieve a Resul
 
 #### Additional Resources
 
+After giving this code excersize at the UtahSC usergroup I was pointed to a C# library build by pluralisight that does a similar thing.
+<https://github.com/pluralsight/maybe-dotnet>
+
 <https://fsharpforfunandprofit.com/rop/>
 
 <https://medium.com/@naveenkumarmuguda/railway-oriented-programming-a-powerful-functional-programming-pattern-ab454e467f31>
