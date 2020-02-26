@@ -15,3 +15,16 @@ The Fish shell looks like bash but has a couple nice features.
 * auto complete - fish will give recomended auto completion
 * try to cd /etc and look around your directories, use tab and arrow keys
 
+### Helpful Articles
+
+Git Prompt:
+
+https://medium.com/@joshuacrass/git-fish-prompt-faa389fff07c
+
+Bash git prompt also has a fish prompt:
+
+https://github.com/magicmonty/bash-git-prompt
+
+Awesome Fish:
+
+https://github.com/jorgebucaran/awesome-fish
