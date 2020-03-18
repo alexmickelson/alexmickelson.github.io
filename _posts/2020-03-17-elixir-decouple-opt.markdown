@@ -20,4 +20,11 @@ In the opts of a GenServer's start_link you have the option of giving a [name: g
 
 # The Problem
 
+How do you design a decoupled system when your processes are tied to a name. Two instances of a named genserver cannot run at the same time because they will have name conflicts.
+
+# The Solution
+
+At startup time you have the oprotunity of giving the genserver a name. Pass in keyword lists through start_link as opts. If a name is given in the opts, use that, otherwise use Keyword.get\3 to provide a default. 
+
+In your tests you can specify a unique name, while still having your actual process running.
 

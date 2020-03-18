@@ -27,6 +27,10 @@ Here is my favorite git helper function written in fish
 >     git push
 > end
 
+### Manage your path
+
+Because fish is a different shell than bash, any manual edits to your path (like in your .bashrc) will not be reflected in the fish shell. You should add a .fish file in .config/fish/ that adds these directories to your path. This will be needed for the dotnet cli and snaps.
+
 ### Helpful Articles
 
 Git Prompt:
